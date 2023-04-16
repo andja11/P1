@@ -308,10 +308,10 @@ int main() {
 
     float floorVertices[] = {
             // positions          // normals          // texture coords
-            10.0f,  10.0f,  0.0f,  0.0f, 0.0f, -1.0f,  1.0f,  1.0f,  // top right
-            10.0f, -10.0f,  0.0f,  0.0f, 0.0f, -1.0f,  1.0f,  0.0f,  // bottom right
+            10.0f,  10.0f,  0.0f,  0.0f, 0.0f, -1.0f,  70.0f,  70.0f,  // top right
+            10.0f, -10.0f,  0.0f,  0.0f, 0.0f, -1.0f,  70.0f,  0.0f,  // bottom right
             -10.0f, -10.0f,  0.0f,  0.0f, 0.0f, -1.0f,  0.0f,  0.0f,  // bottom left
-            -10.0f,  10.0f,  0.0f,  0.0f, 0.0f, -1.0f,  0.0f,  1.0f   // top left
+            -10.0f,  10.0f,  0.0f,  0.0f, 0.0f, -1.0f,  0.0f,  70.0f   // top left
     };
 
     // floor vertices for use in EBO
@@ -338,7 +338,7 @@ int main() {
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6*sizeof(float)));
     glEnableVertexAttribArray(2);
 
-    unsigned int floorTexture = loadTexture(FileSystem::getPath("resources/textures/trava2.jpg").c_str());
+    unsigned int floorTexture = loadTexture(FileSystem::getPath("resources/textures/Grass.jpg").c_str());
     floorShader.use();
     floorShader.setInt("material.texture_diffuse1", 0);
 
@@ -648,7 +648,7 @@ int main() {
         floorShader.setMat4("view",view);
 
         model = glm::mat4(1.0f);
-        model = glm::scale(model, glm::vec3(1.0f));
+        model = glm::scale(model, glm::vec3(30.0f));
         model = glm::translate(model,glm::vec3(0.0,0.0,0.0)); // translate it down so it's at the center of the scene
         model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 
