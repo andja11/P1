@@ -491,9 +491,9 @@ int main() {
 
     PointLight& pointLight = programState->pointLight;
     pointLight.position = glm::vec3(4.0f, 4.0, 0.0);
-    pointLight.ambient = glm::vec3(0.8, 0.3, 0.3);
-    pointLight.diffuse = glm::vec3(0.7, 0.7, 0.7);
-    pointLight.specular = glm::vec3(1.0, 1.0, 1.0);
+    pointLight.ambient = glm::vec3(0.6, 0.3, 0.3);
+    pointLight.diffuse = glm::vec3(0.7, 0.4, 0.4);
+    pointLight.specular = glm::vec3(0.4, 0.3, 0.3);
 
     pointLight.constant = 1.0f;
     pointLight.linear = 0.09f;
@@ -555,12 +555,35 @@ int main() {
         model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
         model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 0.0f, 1.0f));
         model = glm::translate(model,glm::vec3(0.0,11.0, 0.0)); // translate it down so it's at the center of the scene
-        glm::vec3*  catPostion= new glm::vec3[sparkles];
-        for(int i=0;i<3;i++){
-            //float x= glfwGetTime();
-            //        model = glm::translate(model,glm::vec3(2*sin(x),2*cos(x),0));
+        glm::mat4 prva= glm::mat4(1.0f);
+        prva= model;
+        glm::mat4*  catPostion= new glm::mat4[5];
+        catPostion[0]=prva;
+        float angle=20.0f;
+        float xs=0.0f;
+        float ys=0.0f;
+        for(int i=0;i<4;i++){
+            xs +=1.5;
+            ys +=3;
+            model = glm::rotate(prva, glm::radians(-10.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+            model=  glm::translate(model,glm::vec3(xs,ys,0.0)); //prva
+            model = glm::scale(model, glm::vec3(0.05));
+            ourShader.setMat4("model", model);
+            ourModel.Draw(ourShader);
+            model = glm::rotate(prva, glm::radians(10.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+            model=  glm::translate(prva,glm::vec3(-xs,ys,0.0));
+            model = glm::scale(model, glm::vec3(0.05));
+            ourShader.setMat4("model", model);
+            ourModel.Draw(ourShader);
         }
-        model = glm::scale(model, glm::vec3(0.05));    // it's a bit too big for our scene, so scale it down
+        //glm::vec3(3*sin(glm::radians(angle)),0.0, 3*cos(glm::radians(angle))
+        /*model=  glm::translate(prva,glm::vec3(2.0,5.0,0.0));
+        model = glm::scale(model, glm::vec3(0.05));
+        ourShader.setMat4("model", model); */
+
+        ourModel.Draw(ourShader);
+        model=prva;
+        model = glm::scale(prva, glm::vec3(0.05));    // it's a bit too big for our scene, so scale it down
         ourShader.setMat4("model", model);
         ourModel.Draw(ourShader);
 
@@ -632,8 +655,8 @@ int main() {
         floorShader.setMat4("model",model);
 
         floorShader.setVec3("dirLight.direction", -0.2f, -1.0f, -0.3f);
-        floorShader.setVec3("dirLight.ambient", 0.05f, 0.05f, 0.05f);
-        floorShader.setVec3("dirLight.diffuse", 0.f, 0.1f, 0.1f);
+        floorShader.setVec3("dirLight.ambient", 0.1f, 0.1f, 0.1f);
+        floorShader.setVec3("dirLight.diffuse", 0.1f, 0.1f, 0.1f);
         floorShader.setVec3("dirLight.specular", 0.1f, 0.1f, 0.1f);
         pointLight.position =glm::vec3(4.0, 4.0f, 4.0);// glm::vec3(4.0 * cos(currentFrame), 4.0f, 4.0 * sin(currentFrame));
         floorShader.setVec3("pointLight.position", pointLight.position);
@@ -645,8 +668,8 @@ int main() {
         floorShader.setFloat("pointLight.quadratic", pointLight.quadratic);
         floorShader.setVec3("viewPosition", programState->camera.Position);
 
-        floorShader.setVec3("material.specular", 0.5f, 0.5f, 0.5f);
-        floorShader.setFloat("material.shininess", 4.0f);
+        floorShader.setVec3("material.specular", 0.1f, 0.1f, 0.1f);
+        floorShader.setFloat("material.shininess", 2.0f);
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, floorTexture);
