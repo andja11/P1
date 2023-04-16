@@ -354,7 +354,7 @@ int main() {
 
     // load models
     // -----------
-    Model ourModel("resources/objects/backpack/backpack.obj");
+    Model ourModel("resources/objects/cat1/12222_Cat_v1_l3.obj");
     ourModel.SetShaderTextureNamePrefix("material.");
     Model temple("resources/objects/JapaneseTemple/Model/Japanese_Temple.obj");
     temple.SetShaderTextureNamePrefix("material.");
@@ -420,13 +420,15 @@ int main() {
         ourShader.setMat4("projection", projection);
         ourShader.setMat4("view", view);
 
+        //CRTANJEMODELA
         // render the loaded model
         glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model,
-                               programState->backpackPosition); // translate it down so it's at the center of the scene
-        model = glm::scale(model, glm::vec3(programState->backpackScale));    // it's a bit too big for our scene, so scale it down
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::translate(model,glm::vec3(0.0,10.0, 0.0)); // translate it down so it's at the center of the scene
+        model = glm::scale(model, glm::vec3(0.05));    // it's a bit too big for our scene, so scale it down
         ourShader.setMat4("model", model);
-     //   ourModel.Draw(ourShader);
+        ourModel.Draw(ourShader);
 
 
         model = glm::mat4(1.0f);
@@ -476,9 +478,10 @@ int main() {
         floorShader.setMat4("view",view);
 
         model = glm::mat4(1.0f);
-        model = glm::translate(model,glm::vec3(0.0,-3.0,0.0)); // translate it down so it's at the center of the scene
-        model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
         model = glm::scale(model, glm::vec3(1.0f));
+        model = glm::translate(model,glm::vec3(0.0,0.0,0.0)); // translate it down so it's at the center of the scene
+        model = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+
 
 
 
