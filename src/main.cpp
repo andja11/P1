@@ -492,8 +492,8 @@ int main() {
     PointLight& pointLight = programState->pointLight;
     pointLight.position = glm::vec3(4.0f, 4.0, 0.0);
     pointLight.ambient = glm::vec3(0.6, 0.3, 0.3);
-    pointLight.diffuse = glm::vec3(0.7, 0.4, 0.4);
-    pointLight.specular = glm::vec3(0.4, 0.3, 0.3);
+    pointLight.diffuse = glm::vec3(3.0,  1.0 , 1.0);
+    pointLight.specular = glm::vec3(1.6, 1.0, 1.0);
 
     pointLight.constant = 1.0f;
     pointLight.linear = 0.09f;
@@ -531,7 +531,7 @@ int main() {
         ourShader.setVec3("dirLight.direction", -1.0f, -1.0f, -0.3f);
         ourShader.setVec3("dirLight.ambient", 0.1f, 0.1f, 0.1f);
         ourShader.setVec3("dirLight.diffuse", 0.2f, 0.2f, 0.2f);
-        ourShader.setVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
+        ourShader.setVec3("dirLight.specular", 0.2f, 0.2f, 0.2f);
         pointLight.position =glm::vec3(7* cos(currentFrame), 10.0f, 7.0 * sin(currentFrame));//glm::vec3(4.0, 4.0f, 4.0);// glm::vec3(4.0 * cos(currentFrame), 4.0f, 4.0 * sin(currentFrame));
         ourShader.setVec3("pointLight.position", pointLight.position);
         ourShader.setVec3("pointLight.ambient", pointLight.ambient);
@@ -557,13 +557,11 @@ int main() {
         model = glm::translate(model,glm::vec3(0.0,11.0, 0.0)); // translate it down so it's at the center of the scene
         glm::mat4 prva= glm::mat4(1.0f);
         prva= model;
-        glm::mat4*  catPostion= new glm::mat4[5];
-        catPostion[0]=prva;
         float angle=20.0f;
         float xs=0.0f;
         float ys=0.0f;
-        for(int i=0;i<4;i++){
-            xs +=1.5;
+        for(int i=0;i<7;i++){
+            xs +=1.0;
             ys +=3;
             model = glm::rotate(prva, glm::radians(-10.0f), glm::vec3(0.0f, 0.0f, 1.0f));
             model=  glm::translate(model,glm::vec3(xs,ys,0.0)); //prva
@@ -657,14 +655,14 @@ int main() {
         floorShader.setMat4("model",model);
 
         floorShader.setVec3("dirLight.direction", -0.2f, -1.0f, -0.3f);
-        floorShader.setVec3("dirLight.ambient", 0.1f, 0.1f, 0.1f);
+        floorShader.setVec3("dirLight.ambient", 0.05f, 0.05f, 0.05f);
         floorShader.setVec3("dirLight.diffuse", 0.1f, 0.1f, 0.1f);
-        floorShader.setVec3("dirLight.specular", 0.1f, 0.1f, 0.1f);
+        floorShader.setVec3("dirLight.specular", 0.01f, 0.01f, 0.01f);
         pointLight.position =glm::vec3(4.0, 4.0f, 4.0);// glm::vec3(4.0 * cos(currentFrame), 4.0f, 4.0 * sin(currentFrame));
         floorShader.setVec3("pointLight.position", pointLight.position);
         floorShader.setVec3("pointLight.ambient", pointLight.ambient);
         floorShader.setVec3("pointLight.diffuse", pointLight.diffuse);
-        floorShader.setVec3("pointLight.specular", pointLight.specular);
+        floorShader.setVec3("pointLight.specular", 0.2,0.2,0.2);
         floorShader.setFloat("pointLight.constant", pointLight.constant);
         floorShader.setFloat("pointLight.linear", pointLight.linear);
         floorShader.setFloat("pointLight.quadratic", pointLight.quadratic);
@@ -676,9 +674,13 @@ int main() {
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, floorTexture);
         glBindVertexArray(floorVAO);
+        //CULL
+        glEnable(GL_CULL_FACE);     // floor won't be visible if looked from bellow
+        glCullFace(GL_BACK);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+        glDisable(GL_CULL_FACE);
 
-
+        
         //skybox
         glDepthMask(GL_FALSE);
         glDepthFunc(GL_LEQUAL);
