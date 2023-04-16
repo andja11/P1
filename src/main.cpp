@@ -169,6 +169,7 @@ int main() {
     Shader ourShader("resources/shaders/2.model_lighting.vs", "resources/shaders/2.model_lighting.fs");
     Shader floorShader("resources/shaders/floor.vs", "resources/shaders/floor.fs");
     Shader skyboxShader("resources/shaders/skybox.vs", "resources/shaders/skybox.fs");
+    Shader sparkleShader("resources/shaders/blending.vs","resources/shaders/blending.fs");
 
     float skyboxVertices[] = {
             -1.0f,  1.0f, -1.0f,
@@ -272,9 +273,82 @@ int main() {
     floorShader.use();
     floorShader.setInt("material.texture_diffuse1", 0);
 
+    //SKYBOX
     skyboxShader.use();
     skyboxShader.setInt("skybox", 0);
     unsigned int cubemapTexture = loadCubemap(faces);
+
+
+    //SPARKLES
+    int sparkles=10000;
+    float * rotateAngle=new float[sparkles];
+    float x,y,z,div,tempY;
+    y=7.0f;
+    glm::vec3* sparklePosition= new glm::vec3[sparkles];
+    for(int i=0;i<sparkles;++i){
+
+        rotateAngle[i]=(rand()%1000)/100+(rand()%1000)/1000 ;
+
+
+        if(i%10==0){
+            y+=0.5;
+
+        }
+        if(i%20){
+            y+=1.0;
+        }
+
+        div=std::rand()%2000;
+
+        x=std::rand()%200/div;
+        z=std::rand()%200/div;
+        if(i%4==0){
+            x*=-1;
+            z*=-1;
+        }
+        if(i%4==1) {
+            x *= -1;
+            z *= 1;
+        }
+        if(i%4==2) {
+            x *= 1;
+            z *= -1;
+        }
+
+        sparklePosition[i]=glm::vec3(x,y,z);
+        y=7.0f;
+    }
+
+    float transparentVertices[] = {
+
+            0.0f,  0.5f,  0.0f,  0.0f,  0.0f,
+            0.0f, -0.5f,  0.0f,  0.0f,  1.0f,
+            1.0f, -0.5f,  0.0f,  1.0f,  1.0f,
+
+            0.0f,  0.5f,  0.0f,  0.0f,  0.0f,
+            1.0f, -0.5f,  0.0f,  1.0f,  1.0f,
+            1.0f,  0.5f,  0.0f,  1.0f,  0.0f
+    };
+
+    unsigned int transparentVAO, transparentVBO;
+    glGenVertexArrays(1, &transparentVAO);
+    glGenBuffers(1, &transparentVBO);
+    glBindVertexArray(transparentVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, transparentVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(transparentVertices), transparentVertices, GL_STATIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+    glBindVertexArray(0);
+
+
+    //SPARKLES UCITAVANJE
+    unsigned int transparentTexture=loadTexture(FileSystem::getPath("resources/textures/sparkle.png").c_str());
+    unsigned int transparentTexture2=loadTexture(FileSystem::getPath("resources/textures/sparkle.png").c_str());
+
+    sparkleShader.use();
+    sparkleShader.setInt("texture1",0);
 
     //UCITAVANJE MODELA OVDE
 
@@ -356,14 +430,43 @@ int main() {
 
 
         model = glm::mat4(1.0f);
-        model = glm::translate(model,glm::vec3(-4.0,0.0,0.0));
-        model = glm::scale(model, glm::vec3(1));
+        model = glm::translate(model,glm::vec3(0.0,0.0,0.0));
+        model = glm::scale(model, glm::vec3(0.5));
         ourShader.setMat4("model", model);
         temple.Draw(ourShader);
 
      //   if (programState->ImGuiEnabled)
         //    DrawImGui(programState);
-        
+
+        //SPARKLE
+        sparkleShader.use();
+        sparkleShader.setMat4("projection",projection);
+        sparkleShader.setMat4("view",view);
+
+        glBindVertexArray(transparentVAO);
+        glBindTexture(GL_TEXTURE_2D,transparentTexture);
+
+
+        for(int i=0;i<sparkles/2;++i) {
+            glm::mat4 modelSparkle = glm::mat4(1.0f);
+            modelSparkle = glm::scale(modelSparkle, glm::vec3(3.0f));
+            modelSparkle = glm::translate(modelSparkle,sparklePosition[i]);
+
+            modelSparkle=glm::rotate(modelSparkle,(float)glfwGetTime()+rotateAngle[i],glm::vec3(0.0f,1.0f,0.0f));
+            sparkleShader.setMat4("model", modelSparkle);
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+        }
+        glBindTexture(GL_TEXTURE_2D,transparentTexture2);
+
+        for(int i=sparkles/2;i<sparkles;++i) {
+            glm::mat4 modelSparkle = glm::mat4(1.0f);
+            modelSparkle = glm::scale(modelSparkle, glm::vec3(3.0f));
+            modelSparkle = glm::translate(modelSparkle,sparklePosition[i]);
+            modelSparkle=glm::rotate(modelSparkle,2*(float)glfwGetTime()+rotateAngle[i],glm::vec3(0.0f,-1.0f,0.0f));
+
+            sparkleShader.setMat4("model", modelSparkle);
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+        }
 
 
         //floor
@@ -396,7 +499,7 @@ int main() {
         floorShader.setVec3("viewPosition", programState->camera.Position);
 
         floorShader.setVec3("material.specular", 0.5f, 0.5f, 0.5f);
-        floorShader.setFloat("material.shininess", 64.0f);
+        floorShader.setFloat("material.shininess", 4.0f);
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, floorTexture);
