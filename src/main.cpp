@@ -622,8 +622,10 @@ int main() {
 
         for(int i=0;i<sparkles/2;++i) {
             glm::mat4 modelSparkle = glm::mat4(1.0f);
+
             modelSparkle = glm::scale(modelSparkle, glm::vec3(3.0f));
             modelSparkle = glm::translate(modelSparkle,sparklePosition[i]);
+
 
             modelSparkle=glm::rotate(modelSparkle,(float)glfwGetTime()+rotateAngle[i],glm::vec3(0.0f,1.0f,0.0f));
             sparkleShader.setMat4("model", modelSparkle);
