@@ -184,47 +184,56 @@ int main() {
 
     float vertices[] = {
             // positions          // normals           // texture coords
-            -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
-            0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,
-            0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
-            0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
-            -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f,
-            -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
+            0.5f, -0.5f, -0.5f,  0.0f, 0.0f, -1.0f,  0.0f,  0.0f, // bottom-left
+            -0.5f, -0.5f, -0.5f,  1.0f, 0.0f,-1.0f,  1.0f,  0.0f, // bottom-right
+            -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,  -1.0f,  1.0f,  1.0f,// top-right
+            -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,-1.0f,  1.0f,  1.0f, // top-right
+            0.5f,  0.5f, -0.5f,  0.0f, 1.0f,-1.0f,  0.0f,  1.0f, // top-left
+            0.5f, -0.5f, -0.5f,  0.0f, 0.0f, -1.0f,  0.0f,  0.0f, // bottom-left
 
-            -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
-            0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  0.0f,
-            0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
-            0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
-            -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  1.0f,
-            -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
 
-            -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
-            -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
-            -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-            -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-            -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
-            -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+            // front face (CCW winding)
+            -0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 1.0f,  0.0f,  0.0f,// bottom-left
+            0.5f, -0.5f,  0.5f,  1.0f, 0.0f,1.0f,  1.0f,  1.0f, // bottom-right
+            0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 1.0f,  1.0f,  0.0f, // top-right
+            0.5f,  0.5f,  0.5f,  1.0f, 1.0f,1.0f,  1.0f,  1.0f, // top-right
+            -0.5f,  0.5f,  0.5f,  0.0f, 1.0f, 1.0f,  0.0f,  0.0f, // top-left
+            -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,1.0f,  0.0f,  1.0f, // bottom-left
 
-            0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
-            0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
-            0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-            0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-            0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
-            0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
 
-            -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
-            0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  1.0f,
-            0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
-            0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
-            -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  0.0f,
-            -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
+            // left face (CCW)
+            -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 0.0f,  1.0f,  0.0f, // bottom-left
+            -0.5f, -0.5f,  0.5f,  1.0f, 0.0f,0.0f,  0.0f,  1.0f, // bottom-right
+            -0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 0.0f,  1.0f,  1.0f, // top-right
+            -0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 0.0f,  0.0f,  1.0f,// top-right
+            -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 0.0f,  1.0f,  0.0f,// top-left
+            -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,0.0f,  0.0f,  0.0f, // bottom-left
 
-            -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
-            0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  1.0f,
-            0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
-            0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
-            -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,
-            -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
+
+            // right face (CCW)
+            0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 0.0f,  1.0f,  0.0f, // bottom-left
+            0.5f, -0.5f, -0.5f,  1.0f, 0.0f,0.0f,  1.0f,  1.0f, // bottom-right
+            0.5f,  0.5f, -0.5f,  1.0f, 1.0f,0.0f,  0.0f,  1.0f, // top-right
+            0.5f,  0.5f, -0.5f,  1.0f, 1.0f,0.0f,  0.0f,  1.0f, // top-right
+            0.5f,  0.5f,  0.5f,  0.0f, 1.0f, 0.0f,  0.0f,  0.0f, // top-left
+            0.5f, -0.5f,  0.5f,  0.0f, 0.0f,0.0f,  1.0f,  0.0f,
+            // bottom-left
+
+            // bottom face (CCW)
+            -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,0.0f,  0.0f,  1.0f, // bottom-left
+            0.5f, -0.5f, -0.5f,  1.0f, 0.0f,0.0f,  1.0f,  0.0f, // bottom-right
+            0.5f, -0.5f,  0.5f,  1.0f, 1.0f, 0.0f,  1.0f,  1.0f,// top-right
+            0.5f, -0.5f,  0.5f,  1.0f, 1.0f, 0.0f,  1.0f,  0.0f, // top-right
+            -0.5f, -0.5f,  0.5f,  0.0f, 1.0f, 0.0f,  0.0f,  1.0f, // top-left
+            -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 0.0f,  0.0f,  0.0f, // bottom-left
+
+            // top face (CCW)
+            -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,0.0f,  0.0f,  1.0f, // bottom-left
+            0.5f,  0.5f,  0.5f,  1.0f, 0.0f,0.0f,  1.0f,  1.0f, // bottom-right
+            0.5f,  0.5f, -0.5f,  1.0f, 1.0f,0.0f,  1.0f,  0.0f, // top-right
+            0.5f,  0.5f, -0.5f,  1.0f, 1.0f,0.0f,  1.0f,  0.0f, // top-right
+            -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,0.0f,  0.0f,  0.0f, // top-left
+            -0.5f,  0.5f,  0.5f,  0.0f, 0.0f, 0.0f,  0.0f,  1.0f // bottom-left
     };
 
     unsigned int VBO, lightCubeVAO;
@@ -606,8 +615,11 @@ int main() {
      //   model = glm::scale(model, glm::vec3(1.0f)); // a smaller cube
         lightCubeShader.setMat4("model", model);
 
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_BACK);
         glBindVertexArray(lightCubeVAO);
         glDrawArrays(GL_TRIANGLES, 0, 36);
+        glDisable(GL_CULL_FACE);
 
         //SPARKLE
         sparkleShader.use();
