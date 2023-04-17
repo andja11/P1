@@ -358,7 +358,7 @@ int main() {
 
 
     //SPARKLES
-    int sparkles=500;
+    int sparkles=1000;
     float * rotateAngle=new float[sparkles];
     float x,y,z,div,tempY;
     y=10.0f;
