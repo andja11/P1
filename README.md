@@ -8,4 +8,13 @@ Prazan projekat sa pratećim bibliotekama koje koristimo na času.
 4. Cpp fajlovi idu u src folder
 5. Zaglavlja (h i hpp) fajlovi idu u include
 6. Šejderi idu u folder shaders. `Vertex shader` ima ekstenziju `.vs`, `fragment shader` ima ekstenziju `.fs`
-7. ALT+SHIFT+F10 -> project_base -> run
+7. ALT+SHIFT+F10 -> project_base 
+
+
+WASD - za kretanje kamere
+B - osvetljenje po Blin-Phong modelu
+L - ukljuci/iskljuci bloom
+H - ukljuci/iskljuci HDR
+QE - menjanje exp
+
+Andjela Mladjenovic 120/2020
