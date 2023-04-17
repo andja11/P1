@@ -107,7 +107,7 @@ bool hdr = true;
 bool hdrKeyPressed = false;
 bool bloom = true;
 bool bloomKeyPressed = false;
-float exposure = 0.6f; //0.6  sa niskim mnogo detelja na svetlijim i obrnuto
+float exposure = 0.2f; //0.6  sa niskim mnogo detelja na svetlijim i obrnuto
 
 unsigned int loadCubemap(vector<std::string> faces);
 unsigned int loadTexture(char const *path);
@@ -501,10 +501,10 @@ int main() {
     PointLight& pointLight = programState->pointLight;
     pointLight.position = glm::vec3(4.0f, 4.0, 0.0);
     pointLight.ambient = glm::vec3(0.6, 0.3, 0.3);
-    pointLight.diffuse = glm::vec3(3.0,  1.0 , 1.0);
-    pointLight.specular = glm::vec3(1.6, 1.0, 1.0);
+    pointLight.diffuse = glm::vec3(4.0,  1.0 , 1.0);
+    pointLight.specular = glm::vec3(0.4, 0.4, 0.4);
 
-    pointLight.constant = 1.0f;
+    pointLight.constant = 0.1f;
     pointLight.linear = 0.09f;
     pointLight.quadratic = 0.032f;
 
@@ -537,6 +537,7 @@ int main() {
 
         // don't forget to enable shader before setting uniforms
         ourShader.use();
+
         ourShader.setVec3("dirLight.direction", -1.0f, -1.0f, -0.3f);
         ourShader.setVec3("dirLight.ambient", 0.1f, 0.1f, 0.1f);
         ourShader.setVec3("dirLight.diffuse", 0.2f, 0.2f, 0.2f);
@@ -604,6 +605,14 @@ int main() {
 
      //   if (programState->ImGuiEnabled)
         //    DrawImGui(programState);
+
+        ourShader.setInt("blinn",blinn);
+        if(blinn==1){
+            std::cout<<"blinn"<<endl;
+        }
+        else{
+            std::cout<<"phong"<<endl;
+        }
 
         //Cube>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         lightCubeShader.use();
@@ -883,6 +892,9 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
         } else {
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         }
+    }
+    else if(key==GLFW_KEY_B && action==GLFW_PRESS){
+        blinn=!blinn;
     }
 
 }
